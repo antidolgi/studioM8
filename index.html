@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="description" content="Детейлинг премиум-класса в Вологде. Верните шоурумный блеск за 1 день. Керамика Ceramic Pro, бронеплёнка, полировка, химчистка.">
+  <meta property="og:title" content="М8 Детейлинг Вологда | Премиум-уход за авто">
+  <meta property="og:description" content="Верните авто шоурумный блеск за 1 день — с гарантией 2 года. Керамика Ceramic Pro.">
+  <meta property="og:image" content="assets/img/og-image.jpg">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <title>М8 Детейлинг Вологда — премиум-уход за автомобилем</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500&family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/phosphor-icons@1.4.2/src/css/phosphor.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <style>
+    /* ===== CSS-переменные и сброс ===== */
+    :root {
+      --bg-primary: #0B0B0B;
+      --bg-card: #1A1A1A;
+      --accent: #E63946;
+      --accent-hover: #ff4d5a;
+      --silver: #C0C0C0;
+      --text-primary: #FFFFFF;
+      --text-secondary: #A0A0A0;
+      --font-heading: 'Montserrat', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --radius: 12px;
+      --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      color-scheme: dark;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: auto; /* Lenis управляет */ }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 700; }
+    a { color: inherit; text-decoration: none; }
+    img, video { display: block; max-width: 100%; height: auto; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 60px); }
+
+    /* ===== Прелоадер ===== */
+    #preloader {
+      position: fixed; inset: 0; z-index: 10000;
+      background: var(--bg-primary);
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.5s;
+    }
+    .preloader-content { text-align: center; }
+    .preloader-outline { width: 160px; height: auto; stroke: var(--silver); stroke-width: 2; fill: none; stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+    .preloader-fill { clip-path: inset(100% 0 0 0); transition: clip-path 1s; }
+    .preloader-logo { opacity: 0; transform: scale(0.8); margin-top: 20px; font-size: 3rem; font-weight: 900; color: var(--accent); }
+
+    /* ===== Хедер ===== */
+    .header {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      padding: 1rem 0; backdrop-filter: blur(0px);
+      transition: background 0.3s, backdrop-filter 0.3s, padding 0.3s;
+    }
+    .header.scrolled { background: rgba(11,11,11,0.85); backdrop-filter: blur(14px); padding: 0.7rem 0; }
+    .header .container { display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 1.8rem; font-weight: 900; color: var(--accent); letter-spacing: -1px; }
+    .header-phone { font-weight: 500; display: flex; align-items: center; gap: 0.4rem; }
+    .btn-outline {
+      border: 1px solid var(--accent); color: var(--accent);
+      padding: 0.6rem 1.6rem; border-radius: 100px;
+      font-weight: 600; transition: all var(--transition);
+    }
+    .btn-outline:hover { background: var(--accent); color: #fff; }
+
+    /* ===== Hero ===== */
+    .hero {
+      position: relative; height: 100vh; min-height: 700px;
+      display: flex; align-items: center; overflow: hidden;
+    }
+    #three-container { position: absolute; inset: 0; z-index: 0; }
+    /* fallback-image для мобильных */
+    .hero-fallback { position: absolute; inset: 0; background: url('assets/img/hero-mobile.webp') center/cover no-repeat; display: none; z-index: 1; }
+    .hero-content { position: relative; z-index: 2; max-width: 700px; }
+    .hero h1 { font-size: clamp(2.6rem, 6vw, 4.2rem); line-height: 1.15; margin-bottom: 1.2rem; }
+    .hero p { font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2rem; max-width: 540px; }
+    .btn-primary {
+      background: var(--accent); color: #fff; border: none;
+      padding: 1rem 2.5rem; border-radius: 100px; font-size: 1.1rem;
+      font-weight: 600; position: relative; overflow: hidden;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 20px rgba(230,57,70,0.5);
+    }
+    .btn-primary:hover { transform: scale(1.03); box-shadow: 0 8px 28px rgba(230,57,70,0.7); }
+
+    /* ===== Секции ===== */
+    .section { padding: 100px 0; }
+    .section-title { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 2.5rem; text-align: center; }
+    .section-title span { color: var(--accent); }
+
+    /* ===== Карточки услуг ===== */
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+    .service-card {
+      background: var(--bg-card); border-radius: var(--radius);
+      padding: 2rem; perspective: 800px; position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+      overflow: hidden;
+    }
+    .service-card .icon { font-size: 3rem; color: var(--silver); margin-bottom: 1rem; transition: color 0.3s; }
+    .service-card:hover .icon { color: var(--accent); }
+    .service-card h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .service-card p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
+    .service-card .price { font-weight: 700; color: var(--accent); }
+    .shine {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+      pointer-events: none; opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .service-card:hover .shine { opacity: 1; }
+
+    /* ===== Горизонтальный скролл "Почему М8" ===== */
+    .reasons-wrapper { overflow: hidden; }
+    .reasons-track { display: flex; gap: 30px; will-change: transform; }
+    .reason-card {
+      flex: 0 0 320px; background: var(--bg-card); border-radius: var(--radius);
+      padding: 2rem; border-top: 3px solid var(--accent);
+    }
+    .counter-block { text-align: center; margin-top: 3rem; }
+    .counter-number { font-size: 3.5rem; font-weight: 900; color: var(--accent); }
+
+    /* ===== Портфолио ===== */
+    .before-after { position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; border-radius: var(--radius); }
+    .ba-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+    .ba-after { clip-path: inset(0 0 0 50%); }
+    .divider {
+      position: absolute; top: 0; bottom: 0; left: 50%; width: 3px;
+      background: var(--accent); cursor: ew-resize; z-index: 3;
+      transform: translateX(-50%);
+    }
+
+    /* ===== Прайс-лист ===== */
+    .tabs { display: flex; gap: 10px; margin-bottom: 2rem; justify-content: center; flex-wrap: wrap; }
+    .tab-btn { padding: 0.7rem 1.8rem; border-radius: 100px; font-weight: 600; background: var(--bg-card); color: var(--text-secondary); transition: all 0.3s; }
+    .tab-btn.active { background: var(--accent); color: #fff; }
+    .price-table { width: 100%; border-collapse: collapse; }
+    .price-table th, .price-table td { padding: 1rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .price-table th { color: var(--silver); font-weight: 500; }
+
+    /* ===== Акция ===== */
+    .promo-block {
+      border: 2px solid var(--accent); border-radius: var(--radius); padding: 2.5rem;
+      text-align: center; position: relative;
+      background: rgba(230,57,70,0.05);
+    }
+    .deadline { display: inline-flex; gap: 0.8rem; font-size: 1.4rem; font-weight: 700; }
+
+    /* ===== Swiper overrides ===== */
+    .swiper { width: 100%; padding: 20px 0 40px; }
+    .swiper-slide { height: auto; }
+    .review-card { background: var(--bg-card); border-radius: var(--radius); padding: 2rem; }
+    .review-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem; }
+
+    /* ===== FAQ ===== */
+    .accordion-item { border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .accordion-btn { width: 100%; text-align: left; padding: 1.3rem 0; font-size: 1.15rem; font-weight: 600; display: flex; justify-content: space-between; }
+    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .accordion-content p { padding-bottom: 1rem; color: var(--text-secondary); }
+
+    /* ===== Footer ===== */
+    .footer { padding: 40px 0; text-align: center; color: var(--text-secondary); font-size: 0.9rem; }
+
+    @media (max-width: 768px) {
+      .header-phone span { display: none; }
+      .services-grid { grid-template-columns: 1fr; }
+      .reason-card { flex: 0 0 280px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Прелоадер -->
+  <div id="preloader">
+    <div class="preloader-content">
+      <!-- SVG контур автомобиля (упрощённый) -->
+      <svg class="preloader-outline" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M30,70 L30,40 L45,25 L155,25 L170,40 L170,70 M40,70 L40,45 L50,35 L150,35 L160,45 L160,70 M160,50 L190,50 L190,70 L160,70 M40,50 L10,50 L10,70 L40,70" stroke="var(--silver)" stroke-width="2" fill="none"/>
+        <circle cx="55" cy="70" r="10" stroke="var(--silver)" stroke-width="2" fill="none"/>
+        <circle cx="145" cy="70" r="10" stroke="var(--silver)" stroke-width="2" fill="none"/>
+      </svg>
+      <div class="preloader-logo">M8</div>
+    </div>
+  </div>
+
+  <!-- Хедер -->
+  <header class="header">
+    <div class="container">
+      <a href="#" class="logo">M8</a>
+      <a href="tel:89957886668" class="header-phone"><i class="ph ph-phone-call"></i> <span>8 (995) 788-66-68</span></a>
+      <a href="#contact-form" class="btn-outline">Записаться</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div id="three-container"></div>
+    <div class="hero-fallback"></div>
+    <div class="container">
+      <div class="hero-content">
+        <h1 data-splitting>Верните авто шоурумный блеск за 1 день — с гарантией 2 года</h1>
+        <p>Детейлинг премиум-класса в Вологде. Используем керамику Ceramic Pro и бронеплёнку премиум-сегмента.</p>
+        <a href="#contact-form" class="btn-primary" id="hero-cta">Рассчитать стоимость <i class="ph ph-arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Услуги -->
+  <section class="section" id="services">
+    <div class="container">
+      <h2 class="section-title"><span>Что мы делаем</span> — от мойки до бронирования</h2>
+      <div class="services-grid">
+        <!-- Временно используем иконки Phosphor вместо Lottie; как появятся JSON – заменим -->
+        <div class="service-card" data-tilt>
+          <i class="ph ph-drop icon"></i>
+          <h3>Химчистка салона</h3>
+          <p>Глубокая очистка всех поверхностей, удаление запахов, восстановление кожи и текстиля.</p>
+          <div class="price">от 4 500 ₽</div>
+          <div class="shine"></div>
+        </div>
+        <div class="service-card" data-tilt>
+          <i class="ph ph-sparkle icon"></i>
+          <h3>Полировка кузова</h3>
+          <p>Удаление царапин, голограмм, придание зеркального блеска.</p>
+          <div class="price">от 6 000 ₽</div>
+          <div class="shine"></div>
+        </div>
+        <div class="service-card" data-tilt>
+          <i class="ph ph-shield-check icon"></i>
+          <h3>Керамическое покрытие</h3>
+          <p>Защита Ceramic Pro от УФ, химии, мелких царапин. Гарантия 2 года.</p>
+          <div class="price">от 15 000 ₽</div>
+          <div class="shine"></div>
+        </div>
+        <div class="service-card" data-tilt>
+          <i class="ph ph-flag-banner icon"></i>
+          <h3>Бронеплёнка</h3>
+          <p>Полная защита кузова или зон риска. Плёнка SunTek премиум-класса.</p>
+          <div class="price">от 25 000 ₽</div>
+          <div class="shine"></div>
+        </div>
+        <div class="service-card" data-tilt>
+          <i class="ph ph-cloud-rain icon"></i>
+          <h3>Антидождь</h3>
+          <p>Гидрофобное покрытие стёкол и кузова. Капли скатываются на скорости.</p>
+          <div class="price">от 2 000 ₽</div>
+          <div class="shine"></div>
+        </div>
+        <div class="service-card" data-tilt>
+          <i class="ph ph-sunglasses icon"></i>
+          <h3>Тонировка</h3>
+          <p>Атермальная и цветная плёнка. Защита от солнца и посторонних глаз.</p>
+          <div class="price">от 5 000 ₽</div>
+          <div class="shine"></div>
+        </div>
+        <div class="service-card" data-tilt>
+          <i class="ph ph-fan icon"></i>
+          <h3>Озонирование кондиционера</h3>
+          <p>Уничтожение бактерий и грибков, свежесть воздуха в салоне.</p>
+          <div class="price">от 1 500 ₽</div>
+          <div class="shine"></div>
+        </div>
+        <div class="service-card" data-tilt>
+          <i class="ph ph-scissors icon"></i>
+          <h3>Перетяжка руля/сидений</h3>
+          <p>Восстановление кожи, алькантары. Индивидуальный дизайн.</p>
+          <div class="price">от 8 000 ₽</div>
+          <div class="shine"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Почему М8 (горизонтальный скролл) -->
+  <section class="section" id="why-us">
+    <div class="container">
+      <h2 class="section-title">Почему <span>М8</span></h2>
+      <div class="reasons-wrapper" id="reasonsWrapper">
+        <div class="reasons-track">
+          <div class="reason-card">
+            <i class="ph ph-certificate" style="font-size:2.5rem; color:var(--accent); margin-bottom:1rem;"></i>
+            <h3>Сертифицированные мастера</h3>
+            <p>Обучены в Detailer Academy, постоянно повышаем квалификацию.</p>
+          </div>
+          <div class="reason-card">
+            <i class="ph ph-flask" style="font-size:2.5rem; color:var(--accent); margin-bottom:1rem;"></i>
+            <h3>Премиум материалы</h3>
+            <p>Ceramic Pro, SunTek, Koch Chemie — только оригинальные составы.</p>
+          </div>
+          <div class="reason-card">
+            <i class="ph ph-timer" style="font-size:2.5rem; color:var(--accent); margin-bottom:1rem;"></i>
+            <h3>Работаем с 2021 года</h3>
+            <p>Более 250 довольных автомобилей, опыт и гарантия качества.</p>
+          </div>
+          <div class="reason-card">
+            <i class="ph ph-shield-check" style="font-size:2.5rem; color:var(--accent); margin-bottom:1rem;"></i>
+            <h3>Гарантия 2 года</h3>
+            <p>На все работы по керамике и бронеплёнке — официальная гарантия.</p>
+          </div>
+        </div>
+      </div>
+      <div class="counter-block">
+        <div class="counter-number"><span id="counter">0</span>+</div>
+        <p>довольных авто</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Портфолио -->
+  <section class="section" id="portfolio">
+    <div class="container">
+      <h2 class="section-title">Работы <span>до и после</span></h2>
+      <!-- Кастомный слайдер до/после -->
+      <div class="swiper" id="portfolioSwiper">
+        <div class="swiper-wrapper">
+          <!-- Слайд 1: полировка -->
+          <div class="swiper-slide">
+            <div class="before-after" data-ba>
+              <img src="assets/img/portfolio/work1-before.webp" alt="до" class="ba-img ba-before">
+              <img src="assets/img/portfolio/work1-after.webp" alt="после" class="ba-img ba-after" style="clip-path: inset(0 0 0 50%);">
+              <div class="divider"></div>
+            </div>
+          </div>
+          <!-- Слайд 2: химчистка -->
+          <div class="swiper-slide">
+            <div class="before-after" data-ba>
+              <img src="assets/img/portfolio/work2-before.webp" alt="до" class="ba-img ba-before">
+              <img src="assets/img/portfolio/work2-after.webp" alt="после" class="ba-img ba-after" style="clip-path: inset(0 0 0 50%);">
+              <div class="divider"></div>
+            </div>
+          </div>
+          <!-- Слайд 3: бронеплёнка -->
+          <div class="swiper-slide">
+            <div class="before-after" data-ba>
+              <img src="assets/img/portfolio/work3-before.webp" alt="до" class="ba-img ba-before">
+              <img src="assets/img/portfolio/work3-after.webp" alt="после" class="ba-img ba-after" style="clip-path: inset(0 0 0 50%);">
+              <div class="divider"></div>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+      <!-- Видео -->
+      <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:40px; justify-content:center;">
+        <video src="assets/video/process-polish.mp4" muted loop playsinline poster="assets/img/portfolio/work1-after.webp" style="width:300px; border-radius:12px;"></video>
+        <video src="assets/video/process-ceramic.mp4" muted loop playsinline poster="assets/img/portfolio/work2-after.webp" style="width:300px; border-radius:12px;"></video>
+        <video src="assets/video/process-interior.mp4" muted loop playsinline poster="assets/img/portfolio/work3-after.webp" style="width:300px; border-radius:12px;"></video>
+      </div>
+    </div>
+  </section>
+
+  <!-- Прайс-лист -->
+  <section class="section" id="price">
+    <div class="container">
+      <h2 class="section-title">Стоимость <span>услуг</span></h2>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="tab1">Химчистка</button>
+        <button class="tab-btn" data-tab="tab2">Полировка</button>
+        <button class="tab-btn" data-tab="tab3">Защита</button>
+      </div>
+      <div class="tab-content" id="tab1">
+        <table class="price-table">
+          <tr><td>Химчистка салона</td><td>от 4 500 ₽</td></tr>
+          <tr><td>Озонирование кондиционера</td><td>от 1 500 ₽</td></tr>
+        </table>
+      </div>
+      <div class="tab-content" id="tab2" style="display:none;">
+        <table class="price-table">
+          <tr><td>Полировка кузова (легковая)</td><td>от 6 000 ₽</td></tr>
+          <tr><td>Полировка фар</td><td>от 1 500 ₽</td></tr>
+        </table>
+      </div>
+      <div class="tab-content" id="tab3" style="display:none;">
+        <table class="price-table">
+          <tr><td>Керамическое покрытие</td><td>от 15 000 ₽</td></tr>
+          <tr><td>Бронеплёнка (полная)</td><td>от 25 000 ₽</td></tr>
+          <tr><td>Антидождь</td><td>от 2 000 ₽</td></tr>
+          <tr><td>Тонировка</td><td>от 5 000 ₽</td></tr>
+        </table>
+      </div>
+      <p style="text-align:center; color:var(--text-secondary); margin-top:1rem;">Точная стоимость после осмотра автомобиля</p>
+    </div>
+  </section>
+
+  <!-- Акция -->
+  <section class="section" id="promo">
+    <div class="container">
+      <div class="promo-block">
+        <h3 style="font-size:1.8rem; margin-bottom:1rem;">🔥 Майский интенсив: подготовь авто к лету</h3>
+        <p style="font-size:1.1rem; margin-bottom:1rem;">Бесплатная диагностика ЛКП + скидка 15% на керамику или антидождь. Только до 31 мая.</p>
+        <div class="deadline">
+          <span>Осталось мест: <strong id="spots-left">5</strong></span>
+          <span>До конца акции: <strong id="countdown">00:00:00</strong></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Отзывы -->
+  <section class="section" id="reviews">
+    <div class="container">
+      <h2 class="section-title">Отзывы <span>клиентов</span></h2>
+      <div class="swiper" id="reviewsSwiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide review-card">
+            <img src="assets/img/reviews/client-car-1.webp" alt="Авто клиента">
+            <p style="font-style:italic;">«Отличная работа! После керамики машина как новая. Ребята внимательные и аккуратные.»</p>
+            <strong>Алексей, BMW 5</strong>
+          </div>
+          <div class="swiper-slide review-card">
+            <img src="assets/img/reviews/client-car-2.webp" alt="Авто клиента">
+            <p style="font-style:italic;">«Долго сомневался насчёт бронеплёнки, но после первого же выезда на трассу убедился — ни одного скола!»</p>
+            <strong>Дмитрий, Audi A6</strong>
+          </div>
+          <div class="swiper-slide review-card">
+            <img src="assets/img/reviews/client-car-3.webp" alt="Авто клиента">
+            <p style="font-style:italic;">«Химчистка салона превзошла ожидания. Кожаный салон стал как с завода.»</p>
+            <strong>Ирина, Lexus RX</strong>
+          </div>
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container">
+      <h2 class="section-title">Частые <span>вопросы</span></h2>
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-btn">Как долго держится керамика? <i class="ph ph-caret-down"></i></button>
+          <div class="accordion-content"><p>При правильном уходе керамическое покрытие Ceramic Pro служит 2 года, иногда дольше. Мы даём официальную гарантию 2 года.</p></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn">Можно ли мыть авто после полировки? <i class="ph ph-caret-down"></i></button>
+          <div class="accordion-content"><p>Да, но рекомендуем бесконтактную мойку через 7–10 дней после нанесения защитных составов.</p></div>
+        </div>
+        <div class="accordion-item">
+          <button class="accordion-btn">Выезжаете ли вы на дом? <i class="ph ph-caret-down"></i></button>
+          <div class="accordion-content"><p>Мы работаем в стационарном боксе, так как качество требует контролируемых условий. Но можем организовать трансфер.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Контакты -->
+  <section class="section" id="contacts">
+    <div class="container" style="text-align:center;">
+      <h2 class="section-title">Контакты <span>М8</span></h2>
+      <p><i class="ph ph-map-pin"></i> Вологда, ул. Промышленная, 12 (ориентир — ТЦ «Метро»)</p>
+      <p><i class="ph ph-phone-call"></i> <a href="tel:89957886668">8 (995) 788-66-68</a></p>
+      <p><i class="ph ph-envelope"></i> <a href="mailto:pstudio817@yandex.ru">pstudio817@yandex.ru</a></p>
+      <div style="margin: 2rem 0;">
+        <iframe src="https://yandex.ru/map-widget/v1/?lang=ru&z=14&text=Вологда%2C%20Промышленная%2012" width="100%" height="300" frameborder="0" style="border-radius:12px;"></iframe>
+      </div>
+      <!-- Форма -->
+      <form id="contact-form" style="max-width:500px; margin:0 auto; display:grid; gap:1rem;">
+        <input type="text" name="name" placeholder="Ваше имя" required style="padding:0.8rem; background:var(--bg-card); border:1px solid var(--silver); border-radius:8px; color:#fff;">
+        <input type="tel" name="phone" placeholder="Телефон" required style="padding:0.8rem; background:var(--bg-card); border:1px solid var(--silver); border-radius:8px; color:#fff;">
+        <select name="service" style="padding:0.8rem; background:var(--bg-card); border:1px solid var(--silver); border-radius:8px; color:#fff;">
+          <option value="">Выберите услугу</option>
+          <option>Химчистка</option><option>Полировка</option><option>Керамика</option><option>Бронеплёнка</option><option>Другое</option>
+        </select>
+        <button type="submit" class="btn-primary" style="width:100%;">Отправить заявку</button>
+      </form>
+      <!-- Виджет ВК -->
+      <div style="margin-top:2rem;">
+        <div id="vk_groups"></div>
+        <script type="text/javascript">
+          VK.Widgets.Group("vk_groups", {mode: 3, width: "auto", height: "200", color1: '1A1A1A', color2: 'FFFFFF', color3: 'E63946'}, 123456789);
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2026 М8 Детейлинг. Все права защищены. <br>Создано с любовью к автомобилям.</p>
+  </footer>
+
+  <!-- ===== СКРИПТЫ ===== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.min.js"></script>
+  <script src="https://vk.com/js/api/openapi.js?169"></script>
+  <script>
+    // ========== ИНИЦИАЛИЗАЦИЯ ==========
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- Прелоадер ---
+      const preloader = document.getElementById('preloader');
+      const outline = document.querySelector('.preloader-outline');
+      const fill = document.querySelector('.preloader-fill');
+      const logo = document.querySelector('.preloader-logo');
+      gsap.timeline()
+        .to(outline, { strokeDashoffset: 0, duration: 1.5, ease: 'power2.inOut' })
+        .to(fill, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2 }, '-=0.8')
+        .to(logo, { opacity: 1, scale: 1, duration: 0.5 })
+        .to(preloader, { opacity: 0, duration: 0.5, onComplete: () => preloader.remove() });
+
+      // --- Lenis ---
+      const lenis = new Lenis({ lerp: 0.08, wheelMultiplier: 1.2 });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+      // Связываем ScrollTrigger с Lenis
+      gsap.ticker.add((time) => lenis.raf(time * 1000));
+      gsap.ticker.lagSmoothing(0);
+
+      // --- Header scroll ---
+      window.addEventListener('scroll', () => {
+        document.querySelector('.header').classList.toggle('scrolled', window.scrollY > 50);
+      });
+
+      // --- Hero 3D ---
+      if (window.innerWidth > 768) {
+        initThreeJS();
+      } else {
+        document.querySelector('.hero-fallback').style.display = 'block';
+      }
+
+      // --- Splitting.js ---
+      Splitting({ target: '[data-splitting]', by: 'chars' });
+
+      // --- ScrollTrigger анимации ---
+      gsap.utils.toArray('.section').forEach(section => {
+        gsap.from(section, {
+          scrollTrigger: { trigger: section, start: 'top 80%', toggleActions: 'play none none reverse' },
+          opacity: 0, y: 60, filter: 'blur(10px)', duration: 0.8, ease: 'power2.out'
+        });
+      });
+
+      // --- Tilt на карточках ---
+      document.querySelectorAll('.service-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -8; // до 8 градусов
+          const rotateY = ((x - centerX) / centerX) * 8;
+          card.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(600px) rotateX(0) rotateY(0)';
+        });
+      });
+
+      // --- Магнитные кнопки ---
+      document.querySelectorAll('.btn-primary').forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width/2;
+          const y = e.clientY - rect.top - rect.height/2;
+          btn.style.transform = `translate(${x*0.2}px, ${y*0.2}px)`;
+        });
+        btn.addEventListener('mouseleave', () => {
+          btn.style.transform = 'translate(0,0)';
+        });
+        // ripple эффект
+        btn.addEventListener('click', function(e) {
+          const ripple = document.createElement('span');
+          ripple.style.cssText = `position:absolute; border-radius:50%; background:rgba(255,255,255,0.4); width:20px; height:20px; left:${e.offsetX-10}px; top:${e.offsetY-10}px; animation:ripple 0.6s linear;`;
+          this.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 600);
+        });
+      });
+
+      // --- Горизонтальный скролл причин ---
+      const wrapper = document.getElementById('reasonsWrapper');
+      const track = wrapper.querySelector('.reasons-track');
+      gsap.to(track, {
+        x: () => -(track.scrollWidth - wrapper.offsetWidth),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: wrapper,
+          pin: true,
+          scrub: 1,
+          end: () => `+=${track.scrollWidth - wrapper.offsetWidth}`,
+        }
+      });
+
+      // --- Счётчик ---
+      const counterEl = document.getElementById('counter');
+      gsap.fromTo(counterEl, { innerText: 0 }, {
+        innerText: 250, duration: 2.5, snap: { innerText: 1 },
+        scrollTrigger: { trigger: '.counter-block', start: 'top 70%' }
+      });
+
+      // --- Слайдер портфолио до/после ---
+      new Swiper('#portfolioSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 30,
+        pagination: { el: '.swiper-pagination', clickable: true },
+      });
+      // Перетаскивание разделителя
+      document.querySelectorAll('.divider').forEach(divider => {
+        let dragging = false;
+        divider.addEventListener('mousedown', () => dragging = true);
+        window.addEventListener('mouseup', () => dragging = false);
+        const container = divider.parentElement;
+        container.addEventListener('mousemove', (e) => {
+          if (!dragging) return;
+          const rect = container.getBoundingClientRect();
+          let percent = (e.clientX - rect.left) / rect.width * 100;
+          percent = Math.min(100, Math.max(0, percent));
+          const afterImg = container.querySelector('.ba-after');
+          afterImg.style.clipPath = `inset(0 0 0 ${percent}%)`;
+          divider.style.left = percent + '%';
+        });
+        // touch events
+        divider.addEventListener('touchstart', () => dragging = true);
+        container.addEventListener('touchmove', (e) => {
+          if (!dragging) return;
+          const rect = container.getBoundingClientRect();
+          let percent = (e.touches[0].clientX - rect.left) / rect.width * 100;
+          percent = Math.min(100, Math.max(0, percent));
+          const afterImg = container.querySelector('.ba-after');
+          afterImg.style.clipPath = `inset(0 0 0 ${percent}%)`;
+          divider.style.left = percent + '%';
+        });
+      });
+
+      // --- Видео: play на ховере ---
+      document.querySelectorAll('video').forEach(v => {
+        v.addEventListener('mouseenter', () => v.play());
+        v.addEventListener('mouseleave', () => { v.pause(); v.currentTime = 0; });
+      });
+
+      // --- Табы прайса ---
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const target = btn.dataset.tab;
+          document.querySelectorAll('.tab-content').forEach(tc => tc.style.display = 'none');
+          document.getElementById(target).style.display = 'block';
+        });
+      });
+
+      // --- Таймер акции ---
+      function updateCountdown() {
+        const endDate = new Date(2026, 4, 31, 23, 59, 59); // 31 мая 2026
+        const now = new Date();
+        const diff = endDate - now;
+        if (diff <= 0) { document.getElementById('countdown').innerText = '00:00:00'; return; }
+        const hours = Math.floor(diff / 3600000);
+        const mins = Math.floor((diff % 3600000) / 60000);
+        const secs = Math.floor((diff % 60000) / 1000);
+        document.getElementById('countdown').innerText = `${String(hours).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+      }
+      setInterval(updateCountdown, 1000);
+      updateCountdown();
+      // Имитация оставшихся мест
+      document.getElementById('spots-left').innerText = Math.floor(Math.random() * 3) + 1;
+
+      // --- Отзывы Swiper ---
+      new Swiper('#reviewsSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        pagination: { el: '.swiper-pagination', clickable: true },
+        breakpoints: { 768: { slidesPerView: 2 } }
+      });
+
+      // --- Аккордеон FAQ ---
+      document.querySelectorAll('.accordion-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const content = btn.nextElementSibling;
+          if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+          } else {
+            content.style.maxHeight = content.scrollHeight + 'px';
+          }
+        });
+      });
+
+      // --- Форма отправки в Telegram ---
+      document.getElementById('contact-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+        const text = `🔥 Новая заявка с сайта М8:\nИмя: ${data.name}\nТелефон: ${data.phone}\nУслуга: ${data.service || 'не выбрана'}`;
+        // Замените на свои токен и chat_id
+        const BOT_TOKEN = 'YOUR_BOT_TOKEN';
+        const CHAT_ID = 'YOUR_CHAT_ID';
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: CHAT_ID, text })
+        }).then(res => res.json()).then(() => {
+          window.location.href = 'thanks.html';
+        }).catch(err => {
+          alert('Ошибка отправки. Пожалуйста, позвоните нам.');
+          console.error(err);
+        });
+      });
+    });
+
+    // ===== Three.js функция =====
+    function initThreeJS() {
+      const container = document.getElementById('three-container');
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x0B0B0B);
+      const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.5, 20);
+      camera.position.set(3, 1.5, 5);
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      // Освещение
+      const ambient = new THREE.AmbientLight(0x404060);
+      scene.add(ambient);
+      const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+      dirLight.position.set(1, 3, 2);
+      scene.add(dirLight);
+      const backLight = new THREE.PointLight(0xE63946, 0.8, 10);
+      backLight.position.set(-1, 1, 2);
+      scene.add(backLight);
+
+      // Загрузка модели
+      const loader = new THREE.GLTFLoader();
+      loader.load('assets/models/car-premium.glb', (gltf) => {
+        const model = gltf.scene;
+        // Меняем цвет кузова на тёмный металлик
+        model.traverse((child) => {
+          if (child.isMesh) {
+            child.material.color.set('#111111');
+            child.material.metalness = 0.9;
+            child.material.roughness = 0.3;
+          }
+        });
+        model.scale.set(1.2, 1.2, 1.2);
+        scene.add(model);
+
+        // Анимация вращения за мышью
+        let targetRotY = 0;
+        window.addEventListener('mousemove', (e) => {
+          const x = (e.clientX / window.innerWidth) * 2 - 1;
+          targetRotY = x * Math.PI * 0.3; // ограничиваем поворот
+        });
+
+        function animate() {
+          requestAnimationFrame(animate);
+          if (model) {
+            model.rotation.y += (targetRotY - model.rotation.y) * 0.05;
+          }
+          renderer.render(scene, camera);
+        }
+        animate();
+
+        // Вспышка искр при клике на CTA
+        document.getElementById('hero-cta').addEventListener('click', () => {
+          for (let i = 0; i < 30; i++) {
+            const spark = new THREE.Mesh(
+              new THREE.SphereGeometry(0.02, 4, 4),
+              new THREE.MeshBasicMaterial({ color: Math.random() > 0.5 ? 0xE63946 : 0xffffff })
+            );
+            spark.position.set(0, 0.5, 1.5);
+            spark.velocity = new THREE.Vector3(
+              (Math.random() - 0.5) * 0.1,
+              Math.random() * 0.1,
+              (Math.random() - 0.5) * 0.1
+            );
+            scene.add(spark);
+            gsap.to(spark.position, {
+              x: spark.position.x + spark.velocity.x * 2,
+              y: spark.position.y + spark.velocity.y * 2,
+              z: spark.position.z + spark.velocity.z * 2,
+              duration: 0.5, onComplete: () => scene.remove(spark)
+            });
+          }
+        });
+      }, undefined, (error) => {
+        console.error('Ошибка загрузки 3D: ', error);
+        // фолбэк на изображение
+        document.querySelector('.hero-fallback').style.display = 'block';
+      });
+
+      window.addEventListener('resize', () => {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+    }
+  </script>
+</body>
+</html>
