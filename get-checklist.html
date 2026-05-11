@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Скачать чек-лист | М8</title>
+  <style>
+    body { background:#0B0B0B; color:#fff; font-family:'Inter',sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; flex-direction:column; padding:20px; }
+    h1 { color:#E63946; font-family:'Montserrat',sans-serif; }
+    form { display:grid; gap:1rem; max-width:300px; width:100%; }
+    input, button { padding:0.8rem; border-radius:8px; border:1px solid #C0C0C0; background:#1A1A1A; color:#fff; font-size:1rem; }
+    button { background:#E63946; border:none; cursor:pointer; font-weight:600; }
+    .hidden { display:none; }
+    #download-link { color:#E63946; margin-top:1rem; }
+  </style>
+</head>
+<body>
+  <h1>Скачайте чек-лист «Как сохранить кузов летом»</h1>
+  <p>Оставьте телефон или Telegram, и мы отправим вам PDF.</p>
+  <form id="checklist-form">
+    <input type="text" name="contact" placeholder="Телефон или @telegram" required>
+    <button type="submit">Получить чек-лист</button>
+  </form>
+  <div id="success-msg" class="hidden">
+    <p>Спасибо! Ваш чек-лист готов:</p>
+    <a id="download-link" href="assets/docs/summer-checklist.pdf" download>Скачать чек-лист</a>
+  </div>
+  <script>
+    document.getElementById('checklist-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const contact = this.contact.value;
+      const text = `📥 Запрос чек-листа от: ${contact}`;
+      // Замените токен и chat_id на свои
+      const BOT_TOKEN = 'YOUR_BOT_TOKEN';
+      const CHAT_ID = 'YOUR_CHAT_ID';
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CHAT_ID, text })
+      })
+      .then(res => res.json())
+      .then(() => {
+        document.getElementById('checklist-form').classList.add('hidden');
+        document.getElementById('success-msg').classList.remove('hidden');
+      })
+      .catch(() => alert('Ошибка, попробуйте позже'));
+    });
+  </script>
+</body>
+</html>
