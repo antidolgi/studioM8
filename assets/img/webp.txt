@@ -1,1 +1,3 @@
 hero-mobile. webp, hero-desktop. webp
+logo-m8.svg, favicon-32x32.png, og-image.jpg
+│   └── gift-checklist-preview.webp, winter-checklist.pdf
